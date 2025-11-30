@@ -1,14 +1,27 @@
 import telebot
-import json
-from flask import Flask, request
+from random import randint
+from datetime import datetime
+import requests
 import os
-import  requests
-import logging
-logging.basicConfig(level=logging.INFO)
+import gdown
+from flask import Flask, request
 
-api = '7824625079:AAHA4CJaM9lCEJDblzMecLWZ0q2wUMxyQHA'
+TOKEN = os.getenv("BOT_TOKEN")
+bot = telebot.TeleBot(TOKEN, parse_mode=None)
 
-bot = telebot.TeleBot(api)
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return "Bot is running"
+
+
+@app.route(f'/{TOKEN}', methods=['POST'])
+def webhook():
+    json_str = request.get_data().decode('UTF-8')
+    update = telebot.types.Update.de_json(json_str)
+    bot.process_new_update([update])
+    return '', 200leBot(api)
 
 def load_db() :
     try:
